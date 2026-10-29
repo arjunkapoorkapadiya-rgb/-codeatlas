@@ -1,0 +1,26 @@
+[project]
+name = "codeatlas"
+version = "1.0.0"
+description = "AI-powered code intelligence CLI"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Chinmay" }]
+keywords = ["code-intelligence", "ast", "graph", "ai", "cli", "developer-tools"]
+
+dependencies = [
+    "rich>=13.7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+codeatlas = "codeatlas:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["codeatlas"]
