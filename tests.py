@@ -41,9 +41,13 @@ def sample_repo(tmp_path):
 
 def run_cli(*args, cwd=None):
     """Run codeatlas.py as a subprocess; return (rc, stdout, stderr)."""
+    import os
+    env = os.environ.copy()
+    env["PYTHONUTF8"] = "1"
     result = subprocess.run(
         [sys.executable, str(SCRIPT), *args],
-        capture_output=True, text=True, cwd=str(cwd or ROOT),
+        capture_output=True, text=True, encoding="utf-8", errors="replace",
+        cwd=str(cwd or ROOT), env=env,
     )
     return result.returncode, result.stdout, result.stderr
 
@@ -130,7 +134,7 @@ def test_cache_staleness(sample_repo):
     run_cli("index", str(sample_repo))
     # Touch a source file to make cache stale
     import time
-    time.sleep(0.05)
+    time.sleep(1.5)
     (sample_repo / "newfile.py").write_text("def added_fn():\n    pass\n")
     rc, out, _ = run_cli("list", "--path", str(sample_repo), "--json")
     assert rc == 0
